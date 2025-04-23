@@ -106,7 +106,7 @@ function test_input($data) {
            
 
             <?php 
-if ($result && $result->num_rows > 0) : 
+if (isset($result) && $result->num_rows > 0) : 
     while ($row = $result->fetch_assoc()) :
 ?>
  <tr>
