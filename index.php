@@ -24,20 +24,27 @@ if($_SERVER['REQUEST_METHOD']== "GET"){
         while ($row = $result->fetch_assoc()) {
             $idStudent= $row['id'];
         }
-        echo $idStudent;
-
+        echo $idStudent . "<br>";
+        echo '
+SELECT 
+ mdl_assign_submission.id, assignment, userid, status, mdl_course_modules.course,mdl_assign.name, grade, attemptnumber, latest, mdl_modules.id as moduleId
+FROM moodleprod.mdl_assign_submission 
+INNER JOIN mdl_assign on mdl_assign_submission.assignment = mdl_assign.id 
+INNER JOIN mdl_course_modules on mdl_course_modules.instance = mdl_assign.id 
+INNER JOIN mdl_modules on mdl_course_modules.module = mdl_modules.id 
+where userid = ?
+ORDER BY status DESC
+';
 
 $stmt = $conn->prepare('
-     SELECT mdl_assign_submission.id, assignment, userid, status, course, name, grade, attemptnumber, latest FROM moodleprod.mdl_assign_submission 
-    INNER JOIN mdl_assign on mdl_assign_submission.assignment = mdl_assign.id
-    INNER JOIN mdl_course_modules on mdl_course_modules.instance = mdl_assign.id
-    INNER JOIN  mdl_modules on mdl_course_modules.module = mdl_modules.id
-    where 
-    -- mdl_course_modules.module = 16 and
-    -- assignment = 3324 and
-    userid = ?
-    -- and (status ="submitted" or status = "draft")
-    ORDER BY status DESC
+SELECT 
+ mdl_assign_submission.id, assignment, userid, status, mdl_course_modules.course,mdl_assign.name, grade, attemptnumber, latest, mdl_modules.id as moduleId
+FROM moodleprod.mdl_assign_submission 
+INNER JOIN mdl_assign on mdl_assign_submission.assignment = mdl_assign.id 
+INNER JOIN mdl_course_modules on mdl_course_modules.instance = mdl_assign.id 
+INNER JOIN mdl_modules on mdl_course_modules.module = mdl_modules.id 
+where userid = ?
+ORDER BY status DESC
 ');
 
 if (!$stmt) {
@@ -115,7 +122,7 @@ if (isset($result) && $result->num_rows > 0) :
  <tr>
     <td><?php echo $row['id'] ?></td>
     <td><?php echo $row['assignment'] ?></td>
-    <td><?php echo $row['name'] ?></td>
+    <td><?php echo htmlspecialchars($row['name'] , ENT_QUOTES, 'UTF-8')?></td>
     <td><?php echo $row['status'] ?></td>
     <td><?php echo $row['attemptnumber'] ?></td>
     <td><?php echo $row['latest'] ?></td>
