@@ -28,9 +28,12 @@ if($_SERVER['REQUEST_METHOD']== "GET"){
 
 
 $stmt = $conn->prepare('
-    SELECT mdl_assign_submission.id, assignment, userid, status, course, name, grade, attemptnumber, latest FROM moodleprod.mdl_assign_submission 
+     SELECT mdl_assign_submission.id, assignment, userid, status, course, name, grade, attemptnumber, latest FROM moodleprod.mdl_assign_submission 
     INNER JOIN mdl_assign on mdl_assign_submission.assignment = mdl_assign.id
+    INNER JOIN mdl_course_modules on mdl_course_modules.instance = mdl_assign.id
+    INNER JOIN  mdl_modules on mdl_course_modules.module = mdl_modules.id
     where 
+    -- mdl_course_modules.module = 16 and
     -- assignment = 3324 and
     userid = ?
     -- and (status ="submitted" or status = "draft")
@@ -44,7 +47,7 @@ if (!$stmt) {
 $stmt->bind_param("i", $idStudent);
 $stmt->execute();
 $result = $stmt->get_result();
-
+var_dump($result);
 
 
     } else {
