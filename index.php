@@ -91,6 +91,10 @@ function test_input($data) {
             <button id="updateData" class="btn btn-primary mt-2">Check</button>
         </form>
         <br><br>
+
+        <div>Notice: Please, Be aware that some of the old assignments were deleted from the system or were removed or copied.<br>
+            Sometimes button might not work        
+    </div>
         <table class="table table-striped table-bordered table-sm" id="assignmentsTable">
             <thead>
                 <tr>
