@@ -25,26 +25,20 @@ if($_SERVER['REQUEST_METHOD']== "GET"){
             $idStudent= $row['id'];
         }
         echo $idStudent . "<br>";
-        echo '
-SELECT 
- mdl_assign_submission.id, assignment, userid, status, mdl_course_modules.course,mdl_assign.name, grade, attemptnumber, latest, mdl_modules.id as moduleId
-FROM moodleprod.mdl_assign_submission 
-INNER JOIN mdl_assign on mdl_assign_submission.assignment = mdl_assign.id 
-INNER JOIN mdl_course_modules on mdl_course_modules.instance = mdl_assign.id 
-INNER JOIN mdl_modules on mdl_course_modules.module = mdl_modules.id 
-where userid = ?
-ORDER BY status DESC
-';
+
+
 
 $stmt = $conn->prepare('
 SELECT 
- mdl_assign_submission.id, assignment, userid, status, mdl_course_modules.course,mdl_assign.name, grade, attemptnumber, latest, mdl_modules.id as moduleId
+ mdl_assign_submission.id, assignment, userid, status, mdl_course_modules.course, mdl_assign.name, grade, attemptnumber, latest , mdl_course_modules.id as "ActivityId"
 FROM moodleprod.mdl_assign_submission 
 INNER JOIN mdl_assign on mdl_assign_submission.assignment = mdl_assign.id 
 INNER JOIN mdl_course_modules on mdl_course_modules.instance = mdl_assign.id 
 INNER JOIN mdl_modules on mdl_course_modules.module = mdl_modules.id 
 where userid = ?
+GROUP BY mdl_assign_submission.id 
 ORDER BY status DESC
+
 ');
 
 if (!$stmt) {
@@ -126,7 +120,7 @@ if (isset($result) && $result->num_rows > 0) :
     <td><?php echo $row['status'] ?></td>
     <td><?php echo $row['attemptnumber'] ?></td>
     <td><?php echo $row['latest'] ?></td>
-    <td><?php echo '<a href="https://online.cnmstudent.com/mod/assign/view.php?id='.$row['assignment'].'">' . "Go to assignment". "</a>"?></td>
+    <td><?php echo '<a href="https://online.cnmstudent.com/mod/assign/view.php?id='.$row['ActivityId'].'">' . "Go to assignment". "</a>"?></td>
 </tr>
 <?php 
     endwhile;
