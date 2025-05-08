@@ -36,7 +36,7 @@ INNER JOIN mdl_assign on mdl_assign_submission.assignment = mdl_assign.id
 INNER JOIN mdl_course_modules on mdl_course_modules.instance = mdl_assign.id 
 INNER JOIN mdl_modules on mdl_course_modules.module = mdl_modules.id 
 INNER JOIN mdl_course on mdl_course_modules.course = mdl_course.id
-where userid = 16322
+where userid = ?
 GROUP BY mdl_assign_submission.id 
 ORDER BY status DESC
 
